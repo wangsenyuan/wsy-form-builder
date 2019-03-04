@@ -31,7 +31,7 @@ function droppedElem(Elem, drop) {
   }
 }
 
-function makeDropable(types, Elem) {
+export function makeDropable(types, Elem) {
   const dropTarget = {
     canDrop(props, monitor) {
       // console.log('check canDrop: ' + JSON.stringify(props))

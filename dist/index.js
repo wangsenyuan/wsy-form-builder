@@ -29,6 +29,8 @@ var _antd = require('antd');
 
 var _workspace = require('./workspace');
 
+var _workspace2 = _interopRequireDefault(_workspace);
+
 var _property = require('./property');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -65,15 +67,17 @@ function Sidebar(_ref) {
 }
 
 function Stage(_ref2) {
-  var model = _ref2.model;
+  var dndItemTypes = _ref2.dndItemTypes,
+      model = _ref2.model;
 
+  var WS = (0, _dnd.makeDragable)(dndItemTypes, _workspace2.default);
   return _react2.default.createElement(
     'div',
     { className: 'stage' },
     _react2.default.createElement(
       'div',
       { className: 'workspace' },
-      _react2.default.createElement(_dnd.Workspace, { spec: model.rootSpec })
+      _react2.default.createElement(WS, { spec: model.rootSpec })
     ),
     _react2.default.createElement(
       'div',
@@ -117,7 +121,8 @@ var ModelStage = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(Stage, { model: this.state.model });
+      var dndItemTypes = this.props.dndItemTypes || ['INPUT', 'LIST'];
+      return _react2.default.createElement(Stage, { model: this.state.model, dndItemTypes: dndItemTypes });
     }
   }]);
 

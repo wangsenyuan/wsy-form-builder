@@ -3,9 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.makeDropList = exports.makeDropElement = exports.Workspace = undefined;
+exports.makeDropList = exports.makeDropElement = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+// import ItemTypes from '../constants'
+
 // import ListEl from '../../components/list'
 
 
@@ -17,15 +19,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDnd = require('react-dnd');
 
-var _constants = require('../constants');
-
-var _constants2 = _interopRequireDefault(_constants);
-
 var _antd = require('antd');
 
 var _workspace = require('../workspace');
-
-var _workspace2 = _interopRequireDefault(_workspace);
 
 require('./index.scss');
 
@@ -160,7 +156,7 @@ function makeDragable(name, type) {
 // export const DroppedList = droppedElem(WrapList(ListEl), dropDropable(ItemTypes.Input))
 // export const Input = makeDragable("输入框", ItemTypes.Input)
 // export const List = makeDragable("列表", ItemTypes.Input)
-var Workspace = exports.Workspace = makeDropable([_constants2.default.Input, _constants2.default.List], _workspace2.default);
+// export const Workspace = makeDropable(WorkspaceEl)
 var makeDropElement = exports.makeDropElement = droppedElem;
 var makeDropList = exports.makeDropList = function makeDropList(acceptType, Elem) {
   return droppedElem((0, _workspace.WrapList)(Elem), dropDropable(acceptType));

@@ -1,6 +1,6 @@
 import React from 'react'
 // import ItemTypes from '../constants'
-import { makeDropElement, makeDropList, makeDragable } from './dnd'
+import { makeDropElement, makeDropList, makeDragable, makeDropable } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
@@ -23,7 +23,7 @@ function Sidebar({ model }) {
 }
 
 function Stage({ dndItemTypes, model }) {
-  let WS = makeDragable(dndItemTypes, Workspace)
+  let WS = makeDropable(dndItemTypes, Workspace)
   return (
     <div className="stage">
       <div className="workspace">
