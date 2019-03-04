@@ -11,6 +11,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 // import ListEl from '../../components/list'
 
 
+exports.makeDropable = makeDropable;
 exports.makeDragable = makeDragable;
 
 var _react = require('react');

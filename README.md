@@ -7,7 +7,7 @@ A simple, extensible framework to build forms by DnD.
 
 import React from 'react'
 import Stage, { pluginElementPropertyEditoros, pluginDropElementRenders, pluginWidgets } from 'wsy-form-builder'
-import ItemTypes from './stage/constants'
+import { ItemTypes } from './constants'
 import InputEditor from './components/editors/input'
 import ListEditor from './components/editors/list'
 import { Input } from './components'
@@ -49,7 +49,7 @@ pluginElementPropertyEditoros((registerPropertyEditor) => {
 })
 
 export default function App(props) {
-  return <Stage {...props} />
+  return <Stage {...props} dndItemTypes={[ItemTypes.List, ItemTypes.Input]} />
 }
 
 

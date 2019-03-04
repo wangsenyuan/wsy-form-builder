@@ -70,7 +70,7 @@ function Stage(_ref2) {
   var dndItemTypes = _ref2.dndItemTypes,
       model = _ref2.model;
 
-  var WS = (0, _dnd.makeDragable)(dndItemTypes, _workspace2.default);
+  var WS = (0, _dnd.makeDropable)(dndItemTypes, _workspace2.default);
   return _react2.default.createElement(
     'div',
     { className: 'stage' },
