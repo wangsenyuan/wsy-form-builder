@@ -1,0 +1,23 @@
+{
+  "name": "wsy-form-builder",
+  "version": "0.0.1",
+  "description": "a simple, extensible library to build form by Drag & Drop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangsenyuan/wsy-form-builder.git"
+  },
+  "keywords": [
+    "form",
+    "builder"
+  ],
+  "author": "wang.senyuan@gmail.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/wangsenyuan/wsy-form-builder/issues"
+  },
+  "homepage": "https://github.com/wangsenyuan/wsy-form-builder#readme"
+}
