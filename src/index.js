@@ -1,12 +1,12 @@
 import React from 'react'
 // import ItemTypes from '../constants'
-import { Workspace, makeDropElement, makeDropList, makeDragable } from './dnd'
+import { makeDropElement, makeDropList, makeDragable } from './dnd'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import "./index.scss"
 import { observe, getCurrentModel, changeTabKey } from './model'
 import { Tabs } from 'antd'
-import { registerRender } from './workspace'
+import Workspace, { registerRender } from './workspace'
 import { registerPropertyEditor, Editor as PropertyEditor } from './property'
 
 let widgets = []
@@ -22,11 +22,12 @@ function Sidebar({ model }) {
   </Tabs>
 }
 
-function Stage({ model }) {
+function Stage({ dndItemTypes, model }) {
+  let WS = makeDragable(dndItemTypes, Workspace)
   return (
     <div className="stage">
       <div className="workspace">
-        <Workspace spec={model.rootSpec} />
+        <WS spec={model.rootSpec} />
       </div>
       <div className="sidebar">
         <Sidebar model={model} />
@@ -57,7 +58,8 @@ class ModelStage extends React.Component {
   }
 
   render() {
-    return <Stage model={this.state.model} />
+    let dndItemTypes = this.props.dndItemTypes || ['INPUT', 'LIST']
+    return <Stage model={this.state.model} dndItemTypes={dndItemTypes} />
   }
 }
 
