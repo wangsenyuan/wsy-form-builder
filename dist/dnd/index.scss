@@ -1,0 +1,50 @@
+div.dropable-container {
+  > div {
+    width: 100%;
+  }
+
+  div.dropped {
+    position: relative;
+    border-style: dotted;
+    border-width: thin;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 95%;
+    height: 3em;
+    margin: 2px auto;
+    text-align: center;
+
+    i.anticon-edit {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+
+    i.anticon-delete {
+      position: absolute;
+      top: 0px;
+      right: 15px;
+      cursor: pointer;
+    }
+
+    i.anticon-up {
+      position: absolute;
+      top: 15px;
+      right: 0px;
+      cursor: pointer;
+    }
+
+    i.anticon-down {
+      position: absolute;
+      top: 30px;
+      right: 0px;
+      cursor: pointer;
+    }
+  }
+
+  div.dropped.droppable {
+    height: 100%;
+    padding-right: 20px;
+  }
+}

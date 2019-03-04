@@ -1,0 +1,23 @@
+div.stage {
+  min-height: 600px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  div.workspace {
+    flex: 4;
+    display: flex;
+    flex-flow: row;
+  }
+
+  div.sidebar {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    background-color: yellow;
+
+    .drag-item {
+      max-height: 5em;
+    }
+  }
+}
