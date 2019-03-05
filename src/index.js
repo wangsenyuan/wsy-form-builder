@@ -11,10 +11,23 @@ import { registerPropertyEditor, Editor as PropertyEditor } from './property'
 
 let widgets = []
 
+function defaultLayout(workspace, sidebar) {
+  return (
+    <div className="stage">
+      <div className="workspace">
+        {workspace}
+      </div>
+      <div className="sidebar">
+        {sidebar}
+      </div>
+    </div>
+  )
+}
+
 function Sidebar({ model }) {
   return <Tabs activeKey={model.activeTabKey} onChange={changeTabKey}>
     <Tabs.TabPane tab="Widgets" key="widgets-tab">
-      {widgets.map(w => w())}
+      {(widgets && widgets()) || null}
     </Tabs.TabPane>
     <Tabs.TabPane tab="Property" key="property-tab">
       {model.editingSpec ? <PropertyEditor spec={model.editingSpec} /> : "Property"}
@@ -22,17 +35,15 @@ function Sidebar({ model }) {
   </Tabs>
 }
 
-function Stage({ dndItemTypes, model }) {
+function Stage({ dndItemTypes, model, layout }) {
   let WS = makeDropable(dndItemTypes, Workspace)
+
+  if (!layout) {
+    layout = defaultLayout
+  }
+
   return (
-    <div className="stage">
-      <div className="workspace">
-        <WS spec={model.rootSpec} />
-      </div>
-      <div className="sidebar">
-        <Sidebar model={model} />
-      </div>
-    </div>
+    layout(<WS spec={model.rootSpec} />, <Sidebar model={model} />)
   )
 }
 
@@ -59,7 +70,7 @@ class ModelStage extends React.Component {
 
   render() {
     let dndItemTypes = this.props.dndItemTypes || ['INPUT', 'LIST']
-    return <Stage model={this.state.model} dndItemTypes={dndItemTypes} />
+    return <Stage model={this.state.model} dndItemTypes={dndItemTypes} layout={this.props.layout} />
   }
 }
 
@@ -72,14 +83,11 @@ export const pluginDropElementRenders = fn => {
 }
 
 export const pluginWidgets = fn => {
-  let res = fn()
+  let res = fn(makeDragable)
   if (!res) {
     throw new Error("need widgets")
   }
-  widgets = res.map(w => {
-    let Item = makeDragable(w.name, w.type)
-    return props => <Item key={w.spec.name} className="drag-item" spec={w.spec} {...props} />
-  })
+  widgets = res
 }
 
 export default DragDropContext(HTML5Backend)(ModelStage)
