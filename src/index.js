@@ -15,10 +15,10 @@ function defaultLayout(workspace, sidebar) {
   return (
     <div className="stage">
       <div className="workspace">
-        {workspace()}
+        {workspace}
       </div>
       <div className="sidebar">
-        {sidebar()}
+        {sidebar}
       </div>
     </div>
   )
@@ -43,7 +43,7 @@ function Stage({ dndItemTypes, model, layout }) {
   }
 
   return (
-    layout(() => <WS spec={model.rootSpec} />, () => <Sidebar model={model} />)
+    layout(<WS spec={model.rootSpec} />, <Sidebar model={model} />)
   )
 }
 
