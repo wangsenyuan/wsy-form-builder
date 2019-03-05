@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.pluginWidgets = exports.pluginDropElementRenders = exports.pluginElementPropertyEditoros = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -45,6 +43,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var widgets = [];
 
+function defaultLayout(workspace, sidebar) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'stage' },
+    _react2.default.createElement(
+      'div',
+      { className: 'workspace' },
+      workspace
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'sidebar' },
+      sidebar
+    )
+  );
+}
+
 function Sidebar(_ref) {
   var model = _ref.model;
 
@@ -54,9 +69,7 @@ function Sidebar(_ref) {
     _react2.default.createElement(
       _antd.Tabs.TabPane,
       { tab: 'Widgets', key: 'widgets-tab' },
-      widgets.map(function (w) {
-        return w();
-      })
+      widgets && widgets() || null
     ),
     _react2.default.createElement(
       _antd.Tabs.TabPane,
@@ -68,23 +81,16 @@ function Sidebar(_ref) {
 
 function Stage(_ref2) {
   var dndItemTypes = _ref2.dndItemTypes,
-      model = _ref2.model;
+      model = _ref2.model,
+      layout = _ref2.layout;
 
   var WS = (0, _dnd.makeDropable)(dndItemTypes, _workspace2.default);
-  return _react2.default.createElement(
-    'div',
-    { className: 'stage' },
-    _react2.default.createElement(
-      'div',
-      { className: 'workspace' },
-      _react2.default.createElement(WS, { spec: model.rootSpec })
-    ),
-    _react2.default.createElement(
-      'div',
-      { className: 'sidebar' },
-      _react2.default.createElement(Sidebar, { model: model })
-    )
-  );
+
+  if (!layout) {
+    layout = defaultLayout;
+  }
+
+  return layout(_react2.default.createElement(WS, { spec: model.rootSpec }), _react2.default.createElement(Sidebar, { model: model }));
 }
 
 var ModelStage = function (_React$Component) {
@@ -122,7 +128,7 @@ var ModelStage = function (_React$Component) {
     key: 'render',
     value: function render() {
       var dndItemTypes = this.props.dndItemTypes || ['INPUT', 'LIST'];
-      return _react2.default.createElement(Stage, { model: this.state.model, dndItemTypes: dndItemTypes });
+      return _react2.default.createElement(Stage, { model: this.state.model, dndItemTypes: dndItemTypes, layout: this.props.layout });
     }
   }]);
 
@@ -138,16 +144,11 @@ var pluginDropElementRenders = exports.pluginDropElementRenders = function plugi
 };
 
 var pluginWidgets = exports.pluginWidgets = function pluginWidgets(fn) {
-  var res = fn();
+  var res = fn(_dnd.makeDragable);
   if (!res) {
     throw new Error("need widgets");
   }
-  widgets = res.map(function (w) {
-    var Item = (0, _dnd.makeDragable)(w.name, w.type);
-    return function (props) {
-      return _react2.default.createElement(Item, _extends({ key: w.spec.name, className: 'drag-item', spec: w.spec }, props));
-    };
-  });
+  widgets = res;
 };
 
 exports.default = (0, _reactDnd.DragDropContext)(_reactDndHtml5Backend2.default)(ModelStage);
