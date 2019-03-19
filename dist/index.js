@@ -50,12 +50,12 @@ function defaultLayout(workspace, sidebar) {
     _react2.default.createElement(
       'div',
       { className: 'workspace' },
-      workspace()
+      workspace
     ),
     _react2.default.createElement(
       'div',
       { className: 'sidebar' },
-      sidebar()
+      sidebar
     )
   );
 }
@@ -90,11 +90,7 @@ function Stage(_ref2) {
     layout = defaultLayout;
   }
 
-  return layout(function () {
-    return _react2.default.createElement(WS, { spec: model.rootSpec });
-  }, function () {
-    return _react2.default.createElement(Sidebar, { model: model });
-  });
+  return layout(_react2.default.createElement(WS, { spec: model.rootSpec }), _react2.default.createElement(Sidebar, { model: model }));
 }
 
 var ModelStage = function (_React$Component) {

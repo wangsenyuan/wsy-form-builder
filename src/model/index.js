@@ -1,6 +1,6 @@
 import randomString from 'random-string'
 
-let observer = null
+let observers = []
 
 function nextKey() {
   return randomString({ length: 20 })
@@ -17,21 +17,19 @@ let model = {
 }
 
 function emitChange() {
-  if (observer !== null) {
-    // console.log('emitChange')
-    observer(model)
+  if (observers) {
+    for (var i = 0; i < observers.length; i++) {
+      observers[i](model)
+    }
   }
 }
 
 
 export function observe(o) {
-  if (observer !== null) {
-    throw new Error('multiple obervers not supported')
-  }
-  observer = o
+  observers.push(o)
   emitChange()
   return () => {
-    observer = null
+    observers = observers.filter(x => x !== o)
   }
 }
 
@@ -57,7 +55,23 @@ export function addSpec(parentSpec, childSpec) {
   emitChange()
 }
 
-export const getCurrentModel = () => model
+export const getCurrentModel = (spec) => {
+  if (!spec) {
+    return model
+  }
+
+  function loop(cur) {
+    var cp = { ...cur }
+    if (cur.children) {
+      cp.children = cur.children.map(child => loop(child))
+    }
+    return cp
+  }
+
+  model.rootSpec = loop(spec)
+  
+  return model
+}
 
 export const startEditingSpec = (spec) => {
   console.log('startEditingSpec(' + JSON.stringify(spec) + ")")
@@ -138,10 +152,10 @@ export function upSpec(spec) {
     if (i === 0) {
       //can't up anymore
       //parent.children.splice(i, 1)
-    }  else if(i > 0) {
+    } else if (i > 0) {
       // take it
       let [item] = parent.children.splice(i, 1)
-      parent.children.splice(i-1, 0, item)
+      parent.children.splice(i - 1, 0, item)
     } else {
       //dfs
       parent.children = parent.children.map(loop)
@@ -170,7 +184,7 @@ export function downSpec(spec) {
     if (i === parent.children.length - 1) {
       //can't up anymore
       //parent.children.splice(i, 1)
-    }  else if(i >= 0) {
+    } else if (i >= 0) {
       // take next
       let [item] = parent.children.splice(i + 1, 1)
       parent.children.splice(i, 0, item)

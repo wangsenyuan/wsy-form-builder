@@ -51,13 +51,19 @@ class ModelStage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      model: getCurrentModel()
+      model: getCurrentModel(props.spec)
     }
   }
 
   componentDidMount() {
+    let changeNotifier = () => { }
+    if (this.props.onSpecChange) {
+      changeNotifier = this.props.onSpecChange
+    }
+
     this.unObserve = observe(model => {
       this.setState(model)
+      changeNotifier({ ...model.rootSpec })
     })
   }
 
