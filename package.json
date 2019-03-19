@@ -1,6 +1,6 @@
 {
   "name": "wsy-form-builder",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "a simple, extensible library to build form by Drag & Drop",
   "main": "dist/index.js",
   "scripts": {
