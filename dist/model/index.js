@@ -20,7 +20,7 @@ var _randomString2 = _interopRequireDefault(_randomString);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var observer = null;
+var observers = [];
 
 function nextKey() {
   return (0, _randomString2.default)({ length: 20 });
@@ -37,20 +37,20 @@ var model = {
 };
 
 function emitChange() {
-  if (observer !== null) {
-    // console.log('emitChange')
-    observer(model);
+  if (observers) {
+    for (var i = 0; i < observers.length; i++) {
+      observers[i](model);
+    }
   }
 }
 
 function observe(o) {
-  if (observer !== null) {
-    throw new Error('multiple obervers not supported');
-  }
-  observer = o;
+  observers.push(o);
   emitChange();
   return function () {
-    observer = null;
+    observers = observers.filter(function (x) {
+      return x !== o;
+    });
   };
 }
 
@@ -78,7 +78,23 @@ function addSpec(parentSpec, childSpec) {
   emitChange();
 }
 
-var getCurrentModel = exports.getCurrentModel = function getCurrentModel() {
+var getCurrentModel = exports.getCurrentModel = function getCurrentModel(spec) {
+  if (!spec) {
+    return model;
+  }
+
+  function loop(cur) {
+    var cp = _extends({}, cur);
+    if (cur.children) {
+      cp.children = cur.children.map(function (child) {
+        return loop(child);
+      });
+    }
+    return cp;
+  }
+
+  model.rootSpec = loop(spec);
+
   return model;
 };
 
